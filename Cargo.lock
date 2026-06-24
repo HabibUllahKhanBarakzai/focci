@@ -3,16 +3,6 @@
 version = 3
 
 [[package]]
-name = "agent-focus"
-version = "0.1.0"
-dependencies = [
- "clap",
- "serde",
- "serde_json",
- "toml_edit",
-]
-
-[[package]]
 name = "anstream"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -113,6 +103,16 @@ name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
+
+[[package]]
+name = "focci"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "serde",
+ "serde_json",
+ "toml_edit",
+]
 
 [[package]]
 name = "hashbrown"

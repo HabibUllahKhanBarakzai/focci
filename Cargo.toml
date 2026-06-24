@@ -1,19 +1,19 @@
 [package]
-name = "agent-focus"
+name = "focci"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.74"
 description = "Refocus your terminal/editor when an AI coding agent (Claude Code, Codex) finishes a turn or needs your attention."
 authors = ["Habib Khan"]
 license = "Apache-2.0"
-repository = "https://github.com/habib-stellic/agent-focus"
-homepage = "https://github.com/habib-stellic/agent-focus"
+repository = "https://github.com/HabibUllahKhanBarakzai/focci"
+homepage = "https://github.com/HabibUllahKhanBarakzai/focci"
 readme = "README.md"
 keywords = ["claude", "codex", "macos", "focus", "terminal"]
 categories = ["command-line-utilities"]
 
 [[bin]]
-name = "agent-focus"
+name = "focci"
 path = "src/main.rs"
 
 [dependencies]

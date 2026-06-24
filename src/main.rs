@@ -1,9 +1,9 @@
-//! agent-focus — refocus your terminal/editor when an AI coding agent finishes
+//! focci — refocus your terminal/editor when an AI coding agent finishes
 //! a turn or needs your attention.
 //!
 //! Invoked as a hook by the agent. The `claude` and `codex` subcommands are the
 //! hook entry points; `install`/`uninstall`/`doctor`/`focus` are for the user.
-//! The hook entry points always exit 0 — agent-focus is purely observational
+//! The hook entry points always exit 0 — focci is purely observational
 //! and must never block or fail an agent's turn.
 
 mod doctor;
@@ -19,7 +19,7 @@ use event::{ClaudeEvent, Decision};
 
 #[derive(Parser)]
 #[command(
-    name = "agent-focus",
+    name = "focci",
     version,
     about = "Refocus your terminal/editor when an AI coding agent needs your attention.",
     propagate_version = true
@@ -48,7 +48,7 @@ enum Command {
         #[arg(long)]
         force: bool,
     },
-    /// Wire agent-focus into your agents' configuration files.
+    /// Wire focci into your agents' configuration files.
     Install {
         /// Which agent(s) to configure.
         #[arg(long, value_enum, default_value_t = AgentArg::All)]
@@ -60,7 +60,7 @@ enum Command {
         #[arg(long)]
         force: bool,
     },
-    /// Remove agent-focus from your agents' configuration files.
+    /// Remove focci from your agents' configuration files.
     Uninstall {
         /// Which agent(s) to clean up.
         #[arg(long, value_enum, default_value_t = AgentArg::All)]
@@ -102,11 +102,11 @@ impl AgentArg {
 }
 
 fn debug(message: &str) {
-    let enabled = std::env::var("AGENT_FOCUS_DEBUG")
+    let enabled = std::env::var("FOCCI_DEBUG")
         .map(|value| !value.is_empty() && value != "0")
         .unwrap_or(false);
     if enabled {
-        eprintln!("[agent-focus] {message}");
+        eprintln!("[focci] {message}");
     }
 }
 
@@ -142,7 +142,7 @@ fn run_focus(force: bool) -> ! {
         focus::FocusOutcome::NoTarget => {
             eprintln!(
                 "No host app detected (no __CFBundleIdentifier or known TERM_PROGRAM). \
-                 Set AGENT_FOCUS_BUNDLE_ID to your terminal's bundle id."
+                 Set FOCCI_BUNDLE_ID to your terminal's bundle id."
             );
             std::process::exit(1);
         }

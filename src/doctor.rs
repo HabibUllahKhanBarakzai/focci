@@ -1,4 +1,4 @@
-//! `agent-focus doctor` — print detected configuration and integration status,
+//! `focci doctor` — print detected configuration and integration status,
 //! so the user can see what would be focused and whether the hooks are wired.
 
 use std::env;
@@ -18,7 +18,7 @@ fn yes_no(present: bool) -> &'static str {
 }
 
 pub fn run() {
-    println!("agent-focus {}", env!("CARGO_PKG_VERSION"));
+    println!("focci {}", env!("CARGO_PKG_VERSION"));
     println!();
 
     println!("Host app detection:");
@@ -29,7 +29,7 @@ pub fn run() {
                 resolution.bundle_id, resolution.source
             )
         }
-        None => println!("  bundle id            : <none> — set AGENT_FOCUS_BUNDLE_ID to override"),
+        None => println!("  bundle id            : <none> — set FOCCI_BUNDLE_ID to override"),
     }
     println!(
         "  __CFBundleIdentifier : {}",
@@ -55,5 +55,5 @@ pub fn run() {
     );
     println!();
 
-    println!("Tip: switch to another window, then run `agent-focus focus` to test.");
+    println!("Tip: switch to another window, then run `focci focus` to test.");
 }

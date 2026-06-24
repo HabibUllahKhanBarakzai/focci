@@ -1,4 +1,4 @@
-//! Wire agent-focus into the agents' own configuration files, idempotently.
+//! Wire focci into the agents' own configuration files, idempotently.
 //!
 //! - Claude Code: register `Stop` and `Notification` command hooks in
 //!   `~/.claude/settings.json`.
@@ -16,7 +16,7 @@ use serde_json::{json, Map, Value};
 use toml_edit::{Array, DocumentMut};
 
 /// Marker substring used to recognize hook/notify entries that belong to us.
-const MARKER: &str = "agent-focus";
+const MARKER: &str = "focci";
 
 pub struct InstallReport {
     pub path: PathBuf,
@@ -349,7 +349,7 @@ pub fn install_codex(
             changed: false,
             note: Some(
                 "an unrelated `notify` is already set; left untouched. Re-run with --force to \
-                 overwrite, or chain agent-focus from your existing notifier."
+                 overwrite, or chain focci from your existing notifier."
                     .to_string(),
             ),
         });

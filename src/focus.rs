@@ -26,10 +26,10 @@ pub struct BundleResolution {
 /// Resolve the bundle id of the app to focus, in priority order:
 /// explicit override -> macOS-provided launcher bundle -> TERM_PROGRAM mapping.
 pub fn resolve_bundle() -> Option<BundleResolution> {
-    if let Some(explicit) = non_empty_env("AGENT_FOCUS_BUNDLE_ID") {
+    if let Some(explicit) = non_empty_env("FOCCI_BUNDLE_ID") {
         return Some(BundleResolution {
             bundle_id: explicit,
-            source: "AGENT_FOCUS_BUNDLE_ID",
+            source: "FOCCI_BUNDLE_ID",
         });
     }
     if let Some(bundle) = non_empty_env("__CFBundleIdentifier") {
@@ -73,7 +73,7 @@ fn bundle_for_term_program(term_program: &str) -> Option<&'static str> {
 }
 
 pub fn debounce_ms() -> u128 {
-    non_empty_env("AGENT_FOCUS_DEBOUNCE_MS")
+    non_empty_env("FOCCI_DEBOUNCE_MS")
         .and_then(|value| value.parse().ok())
         .unwrap_or(DEFAULT_DEBOUNCE_MS)
 }
@@ -94,7 +94,7 @@ fn stamp_path(bundle_id: &str) -> PathBuf {
         .map(|ch| if ch.is_ascii_alphanumeric() { ch } else { '_' })
         .collect();
     let mut path = PathBuf::from(tmp);
-    path.push(format!("agent-focus-{sanitized}.stamp"));
+    path.push(format!("focci-{sanitized}.stamp"));
     path
 }
 

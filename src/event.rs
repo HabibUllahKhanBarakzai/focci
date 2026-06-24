@@ -1,6 +1,6 @@
 //! Decide whether an incoming agent event should refocus the user's terminal.
 //!
-//! The whole point of agent-focus is to bring the user back *when it matters*
+//! The whole point of focci is to bring the user back *when it matters*
 //! (a turn finished, or the agent is blocked waiting for an approval) and to
 //! stay out of the way otherwise — in particular to ignore the repeating
 //! "waiting for your input" idle reminders that would otherwise yank focus
@@ -16,7 +16,7 @@ pub enum ClaudeEvent {
 }
 
 /// The outcome of evaluating an event. The string is a human-readable reason,
-/// surfaced only under `AGENT_FOCUS_DEBUG` — it never affects the agent.
+/// surfaced only under `FOCCI_DEBUG` — it never affects the agent.
 #[derive(Debug)]
 pub enum Decision {
     Refocus(String),
