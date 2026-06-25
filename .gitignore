@@ -4,6 +4,9 @@
 *.test
 *.out
 
+# GoReleaser
+/dist/
+
 # macOS
 .DS_Store
 

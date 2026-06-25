@@ -1,0 +1,62 @@
+# GoReleaser config — builds macOS binaries, cuts a GitHub Release, and updates
+# the Homebrew tap with a cask that installs the prebuilt binary.
+# Triggered by pushing a v* tag (see .github/workflows/release.yml).
+# Validate locally: goreleaser check  /  goreleaser release --snapshot --clean
+version: 2
+
+project_name: focci
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: focci
+    main: .
+    binary: focci
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    # Stamp the release version into the binary (matches the Makefile / cmd.version).
+    ldflags:
+      - -s -w -X github.com/HabibUllahKhanBarakzai/focci/cmd.version={{ .Version }}
+
+archives:
+  - id: focci
+    formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+release:
+  github:
+    owner: HabibUllahKhanBarakzai
+    name: focci
+
+homebrew_casks:
+  - name: focci
+    binaries:
+      - focci
+    directory: Casks
+    repository:
+      owner: HabibUllahKhanBarakzai
+      name: homebrew-focci
+      branch: main
+      # PAT with contents:write on the homebrew-focci repo (GITHUB_TOKEN cannot
+      # push across repos). Stored as the HOMEBREW_TAP_TOKEN secret.
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: "https://github.com/HabibUllahKhanBarakzai/focci"
+    description: "Refocus your terminal/editor when an AI coding agent needs your attention"
+    # The binary is not code-signed/notarized; strip the Gatekeeper quarantine
+    # flag on install so it runs without a "developer cannot be verified" prompt.
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/focci"]
+          end
