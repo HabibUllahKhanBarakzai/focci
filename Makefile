@@ -2,16 +2,20 @@ BINARY  := focci
 BIN_DIR := bin
 PKG     := ./...
 
+# Stamp the version from the nearest git tag (falls back to "dev").
+VERSION  := $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
+LDFLAGS  := -s -w -X github.com/HabibUllahKhanBarakzai/focci/cmd.version=$(VERSION)
+
 .DEFAULT_GOAL := build
 
 .PHONY: build
 build: ## Compile the binary into bin/
 	@mkdir -p $(BIN_DIR)
-	go build -o $(BIN_DIR)/$(BINARY) .
+	go build -ldflags '$(LDFLAGS)' -o $(BIN_DIR)/$(BINARY) .
 
 .PHONY: install
 install: ## Install focci into $$(go env GOPATH)/bin
-	go install .
+	go install -ldflags '$(LDFLAGS)' .
 
 .PHONY: test
 test: ## Run the test suite

@@ -8,7 +8,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "0.1.0"
+// version is the release version. It defaults to "dev" for source/`go install`
+// builds and is overridden at release time via
+// -ldflags "-X github.com/HabibUllahKhanBarakzai/focci/cmd.version=<tag>".
+var version = "dev"
 
 var rootCmd = &cobra.Command{
 	Use:   "focci",
