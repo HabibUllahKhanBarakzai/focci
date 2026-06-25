@@ -49,8 +49,15 @@ focci install            # configures Claude Code (and Codex if present)
 ```sh
 git clone https://github.com/HabibUllahKhanBarakzai/focci
 cd focci
-cargo install --path .
+go install .          # installs focci to $(go env GOPATH)/bin
 focci install
+```
+
+Or build a local binary without installing:
+
+```sh
+go build -o focci .
+./focci doctor
 ```
 
 ## Usage
@@ -126,9 +133,17 @@ echo '{"hook_event_name":"Stop"}' | FOCCI_DEBUG=1 focci claude --event stop
 ## Design notes
 
 focci is purely **observational**: the hook entry points always exit `0`
-and never emit a `decision`, so they can't block or fail an agent's turn. See
-[`src/event.rs`](src/event.rs) for the refocus/ignore logic and
-[`src/focus.rs`](src/focus.rs) for activation + debounce.
+and never emit a `decision`, so they can't block or fail an agent's turn.
+
+Layout:
+
+```
+main.go                      entry point (delegates to cmd)
+cmd/                         Cobra commands (claude, codex, focus, install, uninstall, doctor)
+internal/event/              the refocus/ignore decision logic
+internal/focus/              bundle resolution, activation, per-app debounce
+internal/config/             idempotent wiring of settings.json (Claude) and config.toml (Codex)
+```
 
 ## License
 
