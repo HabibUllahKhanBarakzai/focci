@@ -31,10 +31,6 @@ refocus.
 ### Homebrew (recommended)
 
 ```sh
-# Before a tagged release exists, build from main:
-brew install --HEAD HabibUllahKhanBarakzai/focci/focci
-
-# Once v0.1.0 is published:
 brew install HabibUllahKhanBarakzai/focci/focci
 ```
 
