@@ -2,42 +2,48 @@
 
 Bring your coding agent back when it needs you, not every time it makes noise.
 
-`focci` is a small macOS helper for people who run long tasks in
-[Claude Code](https://claude.com/claude-code) or
-[Codex](https://developers.openai.com/codex). It listens to the agent's hook or
-notify events and activates the terminal or editor that launched the session
-when there is something useful for you to do: review a completed turn, approve a
-permission request, or continue the conversation.
+You kick off a long task in your coding agent and switch to something else while
+it works — that's the whole point of letting it run. But then you're stuck
+guessing: is it done yet? Is it blocked waiting for me to approve something? You
+either keep flicking back to the terminal (and lose your focus anyway) or you
+forget about it and discover ten minutes later that it stalled on a permission
+prompt the entire time.
 
-The important part is the filtering. AI coding agents can emit repeated idle
-messages after they have already told you they are waiting. `focci` ignores
-those reminders, so your focus is not repeatedly pulled away from whatever you
-are doing next.
+`focci` closes that gap. It's a small macOS helper for people who run long tasks
+in [Claude Code](https://claude.com/claude-code) or
+[Codex](https://developers.openai.com/codex). The moment the agent actually
+needs you — it finished a turn, or it's asking permission — focci brings the
+terminal or editor that launched it back to the front. You stay heads-down on
+other work and let the agent tap you on the shoulder when it matters.
+
+What keeps it from becoming just another nagging notification is the filtering.
+Agents love to repeat themselves: after telling you once that they're waiting,
+they'll keep emitting the same idle reminder. focci knows the difference between
+"I need you" and "I'm still here," and silently ignores the noise — so when your
+window does jump forward, it's always worth looking at.
 
 > macOS only. Focus-stealing is inherently OS-specific; focci uses the
 > macOS app-activation APIs (`open -b` / AppleScript).
 
 ## The workflow it fixes
 
-| Without focci | With focci |
-|---------------|------------|
-| Start an agent task, then keep checking the terminal. | Start an agent task and move on. |
-| Notice late that the agent finished or is blocked on approval. | The launching terminal/editor comes forward when the turn completes or needs permission. |
-| Get pulled back by repeated idle reminders even after you already responded. | Idle reminders are ignored, so only useful events get focus. |
-| Remember which terminal, editor, or IDE was running the agent. | focci detects the launching macOS app and focuses that app. |
+| When… | Without focci | With focci |
+|-------|---------------|-----------|
+| You start a long task | You keep flicking back to check on it | You move on and trust it'll grab you |
+| The agent finishes or needs approval | You notice late — maybe minutes later | Your terminal/editor jumps to the front right away |
+| The agent just repeats "still waiting" | You get yanked back for nothing | focci ignores it; you stay in flow |
+| You had several agents running | You hunt for which window was which | focci surfaces the exact app that launched the session |
 
 ## How it works
 
 ```mermaid
 flowchart LR
-    agent["Claude Code / Codex"] --> event["Hook or notify event"]
-    event --> focci["focci"]
-    focci --> decision{"Needs attention?"}
-    decision -->|Turn finished| debounce["Debounce event bursts"]
-    decision -->|Permission needed| debounce
-    decision -->|Idle reminder| ignore["Ignore"]
-    debounce --> focus["Activate launching app"]
-    focus --> app["Terminal / editor returns to front"]
+    agent["Claude Code / Codex<br/>fires an event"] --> focci["focci reads it"]
+    focci --> decision{"Do you<br/>actually<br/>need to look?"}
+    decision -->|"Turn finished"| debounce["Wait out the burst<br/>(debounce)"]
+    decision -->|"Permission needed"| debounce
+    decision -->|'"Still waiting…" reminder'| ignore["Ignore — stay out of your way"]
+    debounce --> app["Bring your terminal / editor to the front"]
 ```
 
 In practice, `focci` stays out of the agent's decision-making path. The hook
