@@ -52,6 +52,12 @@ homebrew_casks:
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     homepage: "https://github.com/HabibUllahKhanBarakzai/focci"
     description: "Refocus your terminal/editor when an AI coding agent needs your attention"
+    # focci drives window focus via AppleScript (/usr/bin/osascript), so it only
+    # builds for darwin. Declare the macOS requirement on the cask so `brew
+    # install` on Linux fails with a clear "depends on macOS" message instead of
+    # Homebrew's cryptic "Downloadable without a URL!" (no on_linux url exists).
+    custom_block: |
+      depends_on macos: true
     # The binary is not code-signed/notarized; strip the Gatekeeper quarantine
     # flag on install so it runs without a "developer cannot be verified" prompt.
     hooks:
