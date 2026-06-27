@@ -56,8 +56,10 @@ homebrew_casks:
     # builds for darwin. Declare the macOS requirement on the cask so `brew
     # install` on Linux fails with a clear "depends on macOS" message instead of
     # Homebrew's cryptic "Downloadable without a URL!" (no on_linux url exists).
+    # Use the string-comparison form; the bare-symbol form (e.g. `: :big_sur`)
+    # is the deprecated "strict symbol format", and `: true` is not a valid value.
     custom_block: |
-      depends_on macos: true
+      depends_on macos: ">= :big_sur"
     # The binary is not code-signed/notarized; strip the Gatekeeper quarantine
     # flag on install so it runs without a "developer cannot be verified" prompt.
     hooks:
