@@ -42,7 +42,7 @@ flowchart LR
     focci --> decision{"Do you<br/>actually<br/>need to look?"}
     decision -->|"Turn finished"| debounce["Wait out the burst<br/>(debounce)"]
     decision -->|"Permission needed"| debounce
-    decision -->|'"Still waiting…" reminder'| ignore["Ignore — stay out of your way"]
+    decision -->|"'Still waiting…' reminder"| ignore["Ignore — stay out of your way"]
     debounce --> app["Bring your terminal / editor to the front"]
 ```
 
