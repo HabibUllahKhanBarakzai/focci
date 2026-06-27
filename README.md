@@ -1,17 +1,56 @@
 # focci
 
-Bring your terminal (or editor) back to the front the moment an AI coding agent
-needs you — and **only** then.
+Bring your coding agent back when it needs you, not every time it makes noise.
 
-When you kick off a long task in [Claude Code](https://claude.com/claude-code)
-(or, soon, [Codex](https://developers.openai.com/codex)) you tab away to do
-something else. `focci` refocuses your terminal the instant the agent
-finishes its turn or asks for a permission, so you don't have to keep checking.
-Crucially, it **ignores the repeating "waiting for your input" idle reminders**,
-so once you've come back and moved on it won't keep yanking you back.
+`focci` is a small macOS helper for people who run long tasks in
+[Claude Code](https://claude.com/claude-code) or
+[Codex](https://developers.openai.com/codex). It listens to the agent's hook or
+notify events and activates the terminal or editor that launched the session
+when there is something useful for you to do: review a completed turn, approve a
+permission request, or continue the conversation.
+
+The important part is the filtering. AI coding agents can emit repeated idle
+messages after they have already told you they are waiting. `focci` ignores
+those reminders, so your focus is not repeatedly pulled away from whatever you
+are doing next.
 
 > macOS only. Focus-stealing is inherently OS-specific; focci uses the
 > macOS app-activation APIs (`open -b` / AppleScript).
+
+## The workflow it fixes
+
+| Without focci | With focci |
+|---------------|------------|
+| Start an agent task, then keep checking the terminal. | Start an agent task and move on. |
+| Notice late that the agent finished or is blocked on approval. | The launching terminal/editor comes forward when the turn completes or needs permission. |
+| Get pulled back by repeated idle reminders even after you already responded. | Idle reminders are ignored, so only useful events get focus. |
+| Remember which terminal, editor, or IDE was running the agent. | focci detects the launching macOS app and focuses that app. |
+
+## How it works
+
+```mermaid
+flowchart LR
+    agent["Claude Code / Codex"] --> event["Hook or notify event"]
+    event --> focci["focci"]
+    focci --> decision{"Needs attention?"}
+    decision -->|Turn finished| debounce["Debounce event bursts"]
+    decision -->|Permission needed| debounce
+    decision -->|Idle reminder| ignore["Ignore"]
+    debounce --> focus["Activate launching app"]
+    focus --> app["Terminal / editor returns to front"]
+```
+
+In practice, `focci` stays out of the agent's decision-making path. The hook
+commands are observational, exit successfully, and do not tell the agent what to
+do. They only decide whether the current event should bring your app forward.
+
+A typical session looks like this:
+
+1. Start a longer Claude Code or Codex task.
+2. Switch to another app while the agent works.
+3. If the agent finishes a turn or needs approval, focci brings the launching
+   terminal/editor forward.
+4. If the agent only repeats that it is waiting for input, focci ignores it.
 
 ## What triggers a refocus
 
