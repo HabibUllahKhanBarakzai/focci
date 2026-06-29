@@ -25,6 +25,16 @@ window does jump forward, it's always worth looking at.
 > macOS only. Focus-stealing is inherently OS-specific; focci uses the
 > macOS app-activation APIs (`open -b` / AppleScript).
 
+## Demo
+
+Watch focci bring the launching terminal back to the front the moment the
+agent needs you:
+
+<video src="https://github.com/HabibUllahKhanBarakzai/focci/releases/download/demo-assets/video-explaining-the-switch.mov" controls width="100%"></video>
+
+> If the player above doesn't load,
+> [watch the demo here](https://github.com/HabibUllahKhanBarakzai/focci/releases/download/demo-assets/video-explaining-the-switch.mov).
+
 ## The workflow it fixes
 
 | When… | Without focci | With focci |
