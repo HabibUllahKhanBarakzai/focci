@@ -30,10 +30,10 @@ window does jump forward, it's always worth looking at.
 Watch focci bring the launching terminal back to the front the moment the
 agent needs you:
 
-<video src="https://github.com/HabibUllahKhanBarakzai/focci/releases/download/demo-assets/video-explaining-the-switch.mov" controls width="100%"></video>
+![focci bringing the launching terminal back to the front when the agent needs you](docs/demo.gif)
 
-> If the player above doesn't load,
-> [watch the demo here](https://github.com/HabibUllahKhanBarakzai/focci/releases/download/demo-assets/video-explaining-the-switch.mov).
+> Prefer the full-quality clip with audio?
+> [Watch the original video here](https://github.com/HabibUllahKhanBarakzai/focci/releases/download/demo-assets/video-explaining-the-switch.mov).
 
 ## The workflow it fixes
 
