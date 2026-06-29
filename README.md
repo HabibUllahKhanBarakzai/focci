@@ -79,17 +79,19 @@ refocus.
 brew install HabibUllahKhanBarakzai/focci/focci
 ```
 
-focci is distributed as a Homebrew cask (a prebuilt, unsigned binary). On
-Homebrew 4.5+ you may be asked to trust the tap once before installing:
-
-```sh
-brew trust --cask HabibUllahKhanBarakzai/focci/focci
-```
-
-That installs the `focci` binary. Then wire it into your agents:
+focci is distributed as a Homebrew formula with a prebuilt macOS binary. That
+installs the `focci` command; then wire it into your agents:
 
 ```sh
 focci install            # configures Claude Code (and Codex if present)
+```
+
+If you installed an older cask release, migrate once before installing the
+formula:
+
+```sh
+brew uninstall --cask HabibUllahKhanBarakzai/focci/focci
+brew install --formula HabibUllahKhanBarakzai/focci/focci
 ```
 
 ### From source
